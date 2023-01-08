@@ -3,3 +3,4 @@
 versions:
   ghes: '> 3.7'
   ghae: '> 3.7'
+  ghec: '*'

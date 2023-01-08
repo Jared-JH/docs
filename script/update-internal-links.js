@@ -17,7 +17,6 @@
 import { fileURLToPath } from 'url'
 import path from 'path'
 import fs from 'fs'
-import cheerio from 'cheerio'
 import walk from 'walk-sync'
 import { fromMarkdown } from 'mdast-util-from-markdown'
 import visit from 'unist-util-visit'
@@ -124,8 +123,7 @@ async function main() {
       for (const version of allVersionKeys) {
         context.currentVersion = version
         // Render the link for each version using the renderContent pipeline, which includes the rewrite-local-links plugin.
-        const html = await renderContent(oldMarkdownLink, context)
-        const $ = cheerio.load(html, { xmlMode: true })
+        const $ = await renderContent(oldMarkdownLink, context, { cheerioObject: true })
         let linkToCheck = $('a').attr('href')
 
         // We need to preserve fragments and hardcoded versions if any are found.

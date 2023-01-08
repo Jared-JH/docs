@@ -7,12 +7,12 @@ versions:
   feature: copilot
 topics:
   - Copilot
-ms.openlocfilehash: ec117cce02fab8917aef958c69077c521d9c1974
-ms.sourcegitcommit: 6185352bc563024d22dee0b257e2775cadd5b797
+ms.openlocfilehash: 63c670a7cd5263057f79b7761a960854ecac2dd6
+ms.sourcegitcommit: 7fb7ec2e665856fc5f7cd209b53bd0fb1c9bbc67
 ms.translationtype: HT
 ms.contentlocale: ja-JP
-ms.lasthandoff: 12/09/2022
-ms.locfileid: '148192770'
+ms.lasthandoff: 11/29/2022
+ms.locfileid: '148185143'
 ---
 {% data reusables.copilot.copilot-cta-button %}
 
@@ -24,9 +24,7 @@ ms.locfileid: '148192770'
 
 ## 前提条件
 
-{% data reusables.copilot.subscription-prerequisite %}
-
-- {% data variables.product.prodname_vscode %} で {% data variables.product.prodname_copilot %} を使うには、{% data variables.product.prodname_vscode %} がインストールされている必要があります。 詳細については、[{% data variables.product.prodname_vscode %} のダウンロード ページ](https://code.visualstudio.com/Download)を参照してください。
+{% data variables.product.prodname_vscode %} で {% data variables.product.prodname_copilot %} を使うには、{% data variables.product.prodname_vscode %} がインストールされている必要があります。 詳細については、[{% data variables.product.prodname_vscode %} のダウンロード ページ](https://code.visualstudio.com/Download)を参照してください。
 
 ## {% data variables.product.prodname_vscode %} 拡張機能をインストールする
 

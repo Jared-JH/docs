@@ -57,7 +57,6 @@ async function main(opts) {
     'stylesheets',
     'contributing',
     'pages',
-    '.github/actions-scripts',
   ]
   if (!excludeTranslations) {
     roots.push('translations')

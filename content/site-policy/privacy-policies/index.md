@@ -7,6 +7,7 @@ topics:
   - Legal
 children:
   - /github-privacy-statement
+  - /global-privacy-practices
   - /github-subprocessors-and-cookies
   - /github-codespaces-privacy-statement
   - /github-candidate-privacy-policy

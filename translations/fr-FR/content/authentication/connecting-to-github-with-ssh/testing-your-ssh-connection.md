@@ -1,6 +1,6 @@
 ---
-title: Test de votre connexion SSH
-intro: 'Après avoir configuré votre clé SSH et ajouté celle-ci à votre compte sur {% ifversion ghae %}{% data variables.product.product_name %}{% else %}{% data variables.product.product_location %}{% endif %}, vous pouvez tester votre connexion.'
+title: Testing your SSH connection
+intro: 'After you''ve set up your SSH key and added it to your account on {% ifversion ghae %}{% data variables.product.product_name %}{% else %}{% data variables.location.product_location %}{% endif %}, you can test your connection.'
 redirect_from:
   - /articles/testing-your-ssh-connection
   - /github/authenticating-to-github/testing-your-ssh-connection
@@ -13,28 +13,22 @@ versions:
 topics:
   - SSH
 shortTitle: Test your SSH connection
-ms.openlocfilehash: 7724c5939b319748f270db2f190a6df825b0bb4f
-ms.sourcegitcommit: 47bd0e48c7dba1dde49baff60bc1eddc91ab10c5
-ms.translationtype: HT
-ms.contentlocale: fr-FR
-ms.lasthandoff: 09/05/2022
-ms.locfileid: '146338972'
 ---
-Avant de tester votre connexion SSH, vous devez :
-- [Vérifier les clés SSH existantes](/articles/checking-for-existing-ssh-keys)
-- [Générer une nouvelle clé SSH](/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
-- [Ajouter une nouvelle clé SSH à votre compte GitHub](/articles/adding-a-new-ssh-key-to-your-github-account)
+Before testing your SSH connection, you should have:
+- [Checked for existing SSH keys](/articles/checking-for-existing-ssh-keys)
+- [Generated a new SSH key](/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
+- [Added a new SSH key to your GitHub account](/articles/adding-a-new-ssh-key-to-your-github-account)
 
-Quand vous testez votre connexion, vous devez authentifier cette action à l’aide de votre mot de passe, c’est-à-dire la phrase secrète de clé SSH que vous avez créée précédemment. Pour plus d’informations sur l’utilisation des phrases secrètes de clé SSH, consultez [« Utilisation des phrases secrètes de clé SSH ».](/articles/working-with-ssh-key-passphrases)
+When you test your connection, you'll need to authenticate this action using your password, which is the SSH key passphrase you created earlier. For more information on working with SSH key passphrases, see ["Working with SSH key passphrases"](/articles/working-with-ssh-key-passphrases).
 
 {% data reusables.command_line.open_the_multi_os_terminal %}
-2. Entrez les informations suivantes :
+2. Enter the following:
   ```shell
   $ ssh -T git@{% data variables.command_line.codeblock %}
   # Attempts to ssh to {% data variables.product.product_name %}
   ```
 
-  Vous pouvez voir un avertissement comme celui présenté ci-dessous :
+  You may see a warning like this:
 
   ```shell
   > The authenticity of host '{% data variables.command_line.codeblock %} (IP ADDRESS)' can't be established.
@@ -42,15 +36,15 @@ Quand vous testez votre connexion, vous devez authentifier cette action à l’a
   > Are you sure you want to continue connecting (yes/no)?
   ```
 
-3. Vérifiez que l’empreinte digitale dans le message que vous voyez correspond à {% ifversion fpt or ghec %}[l’empreinte digitale de clé publique de {% data variables.product.prodname_dotcom %}](/github/authenticating-to-github/githubs-ssh-key-fingerprints){% else %} l’empreinte digitale de clé publique de votre entreprise{% endif %}. Si c’est le cas, tapez `yes` :
+3. Verify that the fingerprint in the message you see matches {% ifversion fpt or ghec %}[{% data variables.product.prodname_dotcom %}'s public key fingerprint](/github/authenticating-to-github/githubs-ssh-key-fingerprints){% else %} your enterprise's public key fingerprint{% endif %}. If it does, then type `yes`:
   ```shell
-  > Hi <em>username</em>! You've successfully authenticated, but GitHub does not
+  > Hi USERNAME! You've successfully authenticated, but GitHub does not
   > provide shell access.
   ```
 
   {% linux %}
 
-  Le message d'erreur suivant peut s'afficher :
+  You may see this error message:
   ```shell
   ...
   Agent admitted failure to sign using the key.
@@ -58,14 +52,14 @@ Quand vous testez votre connexion, vous devez authentifier cette action à l’a
   Permission denied (publickey).
   ```
 
-  Il s’agit d’un problème connu avec certaines distributions Linux. Pour plus d’informations, consultez [« Erreur : L’agent a reconnu un échec de connexion ».](/articles/error-agent-admitted-failure-to-sign)
+  This is a known problem with certain Linux distributions. For more information, see ["Error: Agent admitted failure to sign"](/articles/error-agent-admitted-failure-to-sign).
 
   {% endlinux %}
 
    {% note %}
 
-   **Remarque :** La commande à distance doit quitter avec le code 1.
+   **Note:** The remote command should exit with code 1.
 
    {% endnote %}
 
-4. Vérifiez que le message obtenu contient votre nom d’utilisateur. Si un message « autorisation refusée » s’affiche, consultez [« Erreur : Autorisation refusée (clé publique) ».](/articles/error-permission-denied-publickey)
+4. Verify that the resulting message contains your username. If you receive a "permission denied" message, see ["Error: Permission denied (publickey)"](/articles/error-permission-denied-publickey).

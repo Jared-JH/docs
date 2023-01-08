@@ -1,6 +1,6 @@
 ---
 title: Pulls
-intro: 'Use the REST API to interact with pull requests.'
+intro: 'The Pulls API allows you to list, view, edit, create, and even merge pull requests.'
 versions:
   fpt: '*'
   ghes: '*'
@@ -11,11 +11,11 @@ topics:
 miniTocMaxHeadingLevel: 3
 ---
 
-## About pull requests
+## About the Pulls API
 
-You can list, view, edit, create, and merge pull requests using the REST API. For information about how to interact with comments on a pull request, see "[Issue comments](/rest/issues/comments)."
+The Pull Request API allows you to list, view, edit, create, and even merge pull requests. Comments on pull requests can be managed via the [Issue Comments API](/rest/reference/issues#comments).
 
-Pull requests are a type of issue. Any actions that are available in both pull requests and issues, like managing assignees, labels, and milestones, are provided by the REST API to manage issues. For more information, see "[Issues](/rest/issues)."
+Every pull request is an issue, but not every issue is a pull request. For this reason, "shared" actions for both features, like manipulating assignees, labels and milestones, are provided within [the Issues API](/rest/reference/issues).
 
 ### Custom media types for pull requests
 

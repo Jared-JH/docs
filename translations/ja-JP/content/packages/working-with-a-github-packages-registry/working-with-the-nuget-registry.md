@@ -15,12 +15,12 @@ versions:
   ghae: '*'
   ghec: '*'
 shortTitle: NuGet registry
-ms.openlocfilehash: cb9e190bb6cfa86ce1bdb31581de6e7d14e9dac8
-ms.sourcegitcommit: 6185352bc563024d22dee0b257e2775cadd5b797
+ms.openlocfilehash: d97a5645a3d945bb79cf6d3b9e8e09eb6b5d7a42
+ms.sourcegitcommit: 47bd0e48c7dba1dde49baff60bc1eddc91ab10c5
 ms.translationtype: HT
 ms.contentlocale: ja-JP
-ms.lasthandoff: 12/09/2022
-ms.locfileid: '148192922'
+ms.lasthandoff: 09/05/2022
+ms.locfileid: '147580512'
 ---
 {% data reusables.package_registry.packages-ghes-release-stage %} {% data reusables.package_registry.packages-ghae-release-stage %}
 
@@ -30,12 +30,9 @@ ms.locfileid: '148192922'
 
 {% data reusables.package_registry.authenticate-packages %}
 
-{% ifversion packages-nuget-v2 %} {% data variables.product.prodname_github_codespaces %} と {% data variables.product.prodname_actions %} に対して、パッケージに権限を個別に付与することもできます。 詳しくは、「[パッケージへの Codespaces のアクセスの確保](/packages/learn-github-packages/configuring-a-packages-access-control-and-visibility#ensuring-codespaces-access-to-your-package)」と、「[パッケージへのワークフロー アクセスの確認](/packages/learn-github-packages/configuring-a-packages-access-control-and-visibility#ensuring-workflow-access-to-your-package)」をご覧ください。
-{% endif %}
-
 ### {% data variables.product.prodname_actions %} における `GITHUB_TOKEN` での認証
 
-リポジトリ内の nuget.config ファイルで{% data variables.product.pat_generic %}をハードコーディングするのでなく、`GITHUB_TOKEN` を使用して {% data variables.product.prodname_actions %} ワークフローで {% data variables.product.prodname_registry %} に対して認証を行うには、以下のコマンドを使用してください。
+リポジトリ内の nuget.config ファイルでトークンをハードコーディングする代わりに、`GITHUB_TOKEN` を使用して {% data variables.product.prodname_actions %} ワークフローで {% data variables.product.prodname_registry %} に対して認証を行うには、以下のコマンドを使用してください。
 
 ```shell
 dotnet nuget add source --username USERNAME --password {%raw%}${{ secrets.GITHUB_TOKEN }}{% endraw %} --store-password-in-clear-text --name github "https://{% ifversion fpt or ghec %}nuget.pkg.github.com{% else %}nuget.HOSTNAME{% endif %}/OWNER/index.json"
@@ -43,7 +40,7 @@ dotnet nuget add source --username USERNAME --password {%raw%}${{ secrets.GITHUB
 
 {% data reusables.package_registry.authenticate-packages-github-token %}
 
-### {% data variables.product.pat_generic %} で認証を行う
+### 個人アクセストークンでの認証
 
 {% data reusables.package_registry.required-scopes %}
 
@@ -51,9 +48,9 @@ dotnet nuget add source --username USERNAME --password {%raw%}${{ secrets.GITHUB
 
 以下のように置き換えてください。
 - `USERNAME` を {% data variables.product.prodname_dotcom %} の個人アカウントの名前に。
-- `TOKEN` を{% data variables.product.pat_v1 %} に。
-- `OWNER` を、インストールする{% ifversion packages-nuget-v2 %}パッケージを所有するユーザーまたは Organization のアカウントの名前、パッケージの公開先とするユーザーまたは Organization のアカウントの名前、{% else %}ご利用のプロジェクトを含むリポジトリの名前に{% endif %}。{% ifversion ghes or ghae %}
-- `HOSTNAME` を {% data variables.location.product_location %} のホスト名に。{% endif %}
+- `TOKEN` を個人用アクセス トークンに。
+- `OWNER` を、プロジェクトを含むリポジトリを所有しているユーザーまたは Organization アカウントの名前に。{% ifversion ghes or ghae %}
+- `HOSTNAME` を {% data variables.product.product_location %} のホスト名に。{% endif %}
 
 {% ifversion ghes %}インスタンスで Subdomain Isolation が有効になっている場合:{% endif %}
 
@@ -94,21 +91,11 @@ dotnet nuget add source --username USERNAME --password {%raw%}${{ secrets.GITHUB
 
 ## パッケージの公開
 
-*nuget.config* ファイルを使用して認証を行うか、コマンド ライン オプションの `--api-key` と {% data variables.product.prodname_dotcom %} {% data variables.product.pat_v1 %} を使うことで、パッケージを {% data variables.product.prodname_registry %} に公開できます。
+*nuget.config* ファイルを使用して認証を行うか、コマンド ライン オプションの `--api-key` と {% data variables.product.prodname_dotcom %} 個人用アクセス トークン (PAT) を使うことで、パッケージを {% data variables.product.prodname_registry %} に公開できます。
 
-{% ifversion packages-nuget-v2 %}
+### GitHub PATをAPIキーとして使用してパッケージを公開する
 
-NuGet レジストリを使用すると、Organization または個人のアカウント内にパッケージを格納し、パッケージをリポジトリに関連付けることができます。 権限をリポジトリから継承するか、リポジトリとは別に細かい権限を設定するかを選ぶことができます。
-
-{% data reusables.package_registry.publishing-user-scoped-packages %}
-
-`nuget.config` ファイルで `RepositoryURL` を指定すると、公開されたパッケージは指定されたリポジトリに自動的に接続されます。 詳しくは、「[`nuget.config` ファイルを使用してパッケージを公開する](/packages/working-with-a-github-packages-registry/working-with-the-nuget-registry#publishing-a-package-using-a-nugetconfig-file)」をご覧ください。 既に公開されているパッケージをリポジトリにリンクする方法については、「[パッケージへのリポジトリの接続](/packages/learn-github-packages/connecting-a-repository-to-a-package)」を参照してください。
-
-{% endif %}
-
-### GitHub {% data variables.product.pat_generic %} を API キーとして使用してパッケージを公開する
-
-{% ifversion ghae %}{% data variables.product.product_name %}{% else %}{% data variables.location.product_location %}{% endif %} のアカウントで使う PAT がまだない場合は、「[{% data variables.product.pat_generic %}を作成する](/github/authenticating-to-github/creating-a-personal-access-token)」をご覧ください。
+{% ifversion ghae %}{% data variables.product.product_name %}{% else %}{% data variables.product.product_location %}{% endif %} のアカウントで使う PAT がまだない場合は、「[個人アクセス トークンを作成する](/github/authenticating-to-github/creating-a-personal-access-token)」をご覧ください。
 
 1. 新しいプロジェクトを作成します。
   ```shell
@@ -119,9 +106,9 @@ NuGet レジストリを使用すると、Organization または個人のアカ�
   dotnet pack --configuration Release
   ```
 
-3. {% data variables.product.pat_generic %} を API キーとして使用してパッケージを発行します。
+3. PATをAPIキーとして使用して、パッケージを公開します。
   ```shell
-  dotnet nuget push "bin/Release/OctocatApp.1.0.0.nupkg"  --api-key YOUR_GITHUB_PAT --source "github"
+  dotnet nuget push "bin/Release/OctocatApp.1.0.0.nupkg"  --api-key <em>YOUR_GITHUB_PAT</em> --source "github"
   ```
 
 {% data reusables.package_registry.viewing-packages %}
@@ -136,10 +123,10 @@ NuGet レジストリを使用すると、Organization または個人のアカ�
   dotnet new console --name OctocatApp
   ```
 3. プロジェクト固有の情報をプロジェクト ファイル (末尾が *.csproj* のファイル) に追加します。  以下のように置き換えてください。
-    - `OWNER` を、パッケージを接続するリポジトリを所有するユーザーまたは Organization アカウントの名前に。
-    - `REPOSITORY` を、パッケージを接続するリポジトリの名前に。                      
+    - `OWNER` を、プロジェクトを含むリポジトリを所有しているユーザーまたは Organization アカウントの名前に。
+    - `REPOSITORY` を、公開したいパッケージを含むリポジトリの名前に。                      
     - `1.0.0` をパッケージのバージョン番号に。{% ifversion ghes or ghae %}
-    - `HOSTNAME` を {% data variables.location.product_location %} のホスト名に。{% endif %}
+    - `HOSTNAME` を {% data variables.product.product_location %} のホスト名に。{% endif %}
   ``` xml
   <Project Sdk="Microsoft.NET.Sdk">
 
@@ -170,7 +157,7 @@ NuGet レジストリを使用すると、Organization または個人のアカ�
 
 ## 同じリポジトリへの複数パッケージの公開
 
-複数のパッケージを同じリポジトリに接続するには、同じ {% data variables.product.prodname_dotcom %} リポジトリの URL をすべての *.csproj* プロジェクト ファイルの `RepositoryURL` フィールドに含めることができます。 {% data variables.product.prodname_dotcom %}は、そのフィールドに基づいてリポジトリをマッチします。
+複数のパッケージを同じリポジトリに公開するには、同じ {% data variables.product.prodname_dotcom %} リポジトリの URL をすべての *.csproj* プロジェクト ファイルの `RepositoryURL` フィールドに含めることができます。 {% data variables.product.prodname_dotcom %}は、そのフィールドに基づいてリポジトリをマッチします。
 
 たとえば、以下の *OctodogApp* と *OctocatApp* プロジェクトは同じリポジトリに公開されます。
 
@@ -247,7 +234,7 @@ NuGet レジストリを使用すると、Organization または個人のアカ�
 
 nuspec ファイルを使用している場合は、`repository` 要素と必須の `type` および `url` 属性が含まれていることを確認してください。
 
-`GITHUB_TOKEN` を使って {% data variables.product.prodname_actions %} ワークフロー内の {% data variables.product.prodname_registry %} レジストリの認証を受けている場合、そのトークンからは、ワークフローの実行場所とは異なるリポジトリ内にあるプライベート リポジトリベースのパッケージにアクセスできません。 他のリポジトリに関連付けられたパッケージにアクセスするには、代わりにスコープが `read:packages` の {% data variables.product.pat_v1 %} を生成し、このトークンをシークレットとして渡します。
+`GITHUB_TOKEN` を使って {% data variables.product.prodname_actions %} ワークフロー内の {% data variables.product.prodname_registry %} レジストリの認証を受けている場合、そのトークンからは、ワークフローの実行場所とは異なるリポジトリ内にあるプライベート リポジトリベースのパッケージにアクセスできません。 他のリポジトリに関連付けられたパッケージにアクセスするには、代わりにスコープが `read:packages` の PAT を生成し、このトークンをシークレットとして渡します。
  
 ## 参考資料
 

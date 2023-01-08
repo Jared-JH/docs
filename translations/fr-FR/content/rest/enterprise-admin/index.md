@@ -1,6 +1,6 @@
 ---
-title: Administration de GitHub Enterprise
-intro: Vous pouvez utiliser ces points de terminaison pour administrer votre entreprise.
+title: GitHub Enterprise administration
+intro: You can use these endpoints to administer your enterprise.
 allowTitleToDifferFromFilename: true
 redirect_from:
   - /v3/enterprise-admin
@@ -20,7 +20,6 @@ children:
   - /announcement
   - /audit-log
   - /billing
-  - /code-security-and-analysis
   - /global-webhooks
   - /ldap
   - /license
@@ -32,52 +31,54 @@ children:
   - /repo-pre-receive-hooks
   - /users
   - /scim
-ms.openlocfilehash: 19688f806101c8022b64dfc21806b79338917353
-ms.sourcegitcommit: 47bd0e48c7dba1dde49baff60bc1eddc91ab10c5
-ms.translationtype: HT
-ms.contentlocale: fr-FR
-ms.lasthandoff: 09/05/2022
-ms.locfileid: '147065592'
 ---
+
 {% ifversion fpt or ghec %}
 
 {% note %}
 
-**Remarque :** Cet article s’applique à {% data variables.product.prodname_ghe_cloud %}. Pour afficher la version de {% data variables.product.prodname_ghe_managed %} ou {% data variables.product.prodname_ghe_server %}, utilisez le menu déroulant **{% data ui.pages.article_version %}** .
+**Note:** This article applies to {% data variables.product.prodname_ghe_cloud %}. To see the {% data variables.product.prodname_ghe_managed %} or {% data variables.product.prodname_ghe_server %} version, use the **{% data ui.pages.article_version %}** drop-down menu.
 
 {% endnote %}
 
 {% endif %}
 
-### URL de point de terminaison
+{% data reusables.user-settings.enterprise-admin-api-classic-pat-only %}
 
-Les points de terminaison de l’API REST{% ifversion ghes %}, à l’exception des points de terminaison de l’API [Console de gestion](#management-console),{% endif %} sont précédés de l’URL suivante :
+### Endpoint URLs
+
+REST API endpoints{% ifversion ghes %}—except [Management Console](#management-console) API endpoints—{% endif %} are prefixed with the following URL:
 
 ```shell
 {% data variables.product.api_url_pre %}
 ```
 
-{% ifversion fpt or ghec %} Lorsque les points de terminaison incluent `{enterprise}`, remplacez `{enterprise}` par le descripteur de votre compte d’entreprise, qui est inclus dans l’URL de vos paramètres d’entreprise. Par exemple, si votre compte d’entreprise se trouve à `https://github.com/enterprises/octo-enterprise`l’emplacement, remplacez `{enterprise}` par `octo-enterprise`.
+{% ifversion fpt or ghec %}
+When endpoints include `{enterprise}`, replace `{enterprise}` with the handle for your enterprise account, which is included in the URL for your enterprise settings. For example, if your enterprise account is located at `https://github.com/enterprises/octo-enterprise`, replace `{enterprise}` with `octo-enterprise`.
 {% endif %}
 
-{% ifversion ghes %} [Console de gestion](#management-console) Les points de terminaison d’API sont précédés uniquement d’un nom d’hôte :
+{% ifversion ghes %}
+[Management Console](#management-console) API endpoints are only prefixed with a hostname:
 
 ```shell
-http(s)://<em>hostname</em>/
+http(s)://HOSTNAME/
 ```
-{% endif %} {% ifversion ghae or ghes %}
-### Authentification
+{% endif %}
+{% ifversion ghae or ghes %}
+### Authentication
 
-Vos points de terminaison d’API d’installation de {% data variables.product.product_name %} acceptent [les mêmes méthodes d’authentification](/rest/overview/resources-in-the-rest-api#authentication) que l’API GitHub.com. Vous pouvez vous authentifier avec des **[jetons OAuth](/apps/building-integrations/setting-up-and-registering-oauth-apps/)** {% ifversion ghes %}(qui peuvent être créés à l’aide de [l’API d’autorisations](/rest/reference/oauth-authorizations#create-a-new-authorization)) {% endif %}ou **[l’authentification de base](/rest/overview/resources-in-the-rest-api#basic-authentication)** . {% ifversion ghes %} Les jetons OAuth doivent avoir l’[étendue OAuth](/developers/apps/scopes-for-oauth-apps#available-scopes) `site_admin` lorsqu’ils sont utilisés avec des points de terminaison spécifiques à l’entreprise.{% endif %}
+Your {% data variables.product.product_name %} installation's API endpoints accept [the same authentication methods](/rest/overview/resources-in-the-rest-api#authentication) as the GitHub.com API. You can authenticate yourself with **[OAuth tokens](/apps/building-integrations/setting-up-and-registering-oauth-apps/)** {% ifversion ghes %}(which can be created using the [Authorizations API](/rest/reference/oauth-authorizations#create-a-new-authorization)) {% endif %}or **[basic authentication](/rest/overview/resources-in-the-rest-api#basic-authentication)**. {% ifversion ghes %}
+OAuth tokens must have the `site_admin` [OAuth scope](/developers/apps/scopes-for-oauth-apps#available-scopes) when used with Enterprise-specific endpoints.{% endif %}
 
-Les points de terminaison de l’API d’administration d’entreprise sont uniquement accessibles aux administrateurs de site {% data variables.product.product_name %} authentifiés{% ifversion ghes %}, à l’exception de l’API [Console de gestion](#management-console), qui nécessite le [mot de passe de la console de gestion](/enterprise/admin/articles/accessing-the-management-console/){% endif %}.
+Enterprise administration API endpoints are only accessible to authenticated {% data variables.product.product_name %} site administrators{% ifversion ghes %}, except for the [Management Console](#management-console) API, which requires the [Management Console password](/enterprise/admin/articles/accessing-the-management-console/){% endif %}.
 
 {% endif %}
 
 {% ifversion ghae or ghes %}
-### Informations sur la version
+### Version information
 
-La version actuelle de votre entreprise est retournée dans l’en-tête de réponse de chaque API : `X-GitHub-Enterprise-Version: {{currentVersion}}.0`
-Vous pouvez également lire la version actuelle en appelant le [point de terminaison meta](/rest/reference/meta/).
+The current version of your enterprise is returned in the response header of every API:
+`X-GitHub-Enterprise-Version: {{currentVersion}}.0`
+You can also read the current version by calling the [meta endpoint](/rest/reference/meta/).
 
 {% endif %}

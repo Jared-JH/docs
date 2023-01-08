@@ -1,6 +1,6 @@
 ---
 title: Codespaces
-intro: 'REST API を使用し、{% data variables.product.prodname_github_codespaces %} を管理します。'
+intro: '{% data variables.product.prodname_github_codespaces %} API を使うと、REST API を利用して codespace を管理できます。'
 versions:
   fpt: '*'
   ghec: '*'
@@ -16,11 +16,11 @@ children:
   - /secrets
 redirect_from:
   - /rest/reference/codespaces
-ms.openlocfilehash: 9e872a046905bde962b2e0fe767534ef51cc3a5e
-ms.sourcegitcommit: 6185352bc563024d22dee0b257e2775cadd5b797
+ms.openlocfilehash: c632b85d7e44e225a7dea2669a28a79a220f90a7
+ms.sourcegitcommit: e8c012864f13f9146e53fcb0699e2928c949ffa8
 ms.translationtype: HT
 ms.contentlocale: ja-JP
-ms.lasthandoff: 12/09/2022
-ms.locfileid: '148193010'
+ms.lasthandoff: 11/09/2022
+ms.locfileid: '148160243'
 ---
 

@@ -2,7 +2,7 @@
 title: Pull request reviews
 shortTitle: Reviews
 allowTitleToDifferFromFilename: true
-intro: 'Use the REST API to interact with pull request reviews.'
+intro: ''
 versions:
   fpt: '*'
   ghes: '*'
@@ -13,7 +13,7 @@ topics:
 miniTocMaxHeadingLevel: 3
 ---
 
-## About pull request reviews
+## About the Pull request reviews API
 
 Pull Request Reviews are groups of pull request review comments on a pull request, grouped together with a state and optional body comment.
 

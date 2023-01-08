@@ -16,12 +16,12 @@ topics:
   - Networking
   - Security
 shortTitle: Enable subdomain isolation
-ms.openlocfilehash: 6ce23de3646d3ca3f4523ec7716907f8b5430564
-ms.sourcegitcommit: 6185352bc563024d22dee0b257e2775cadd5b797
+ms.openlocfilehash: e48b6d474bf4d930836047343eab267731e67823
+ms.sourcegitcommit: f638d569cd4f0dd6d0fb967818267992c0499110
 ms.translationtype: HT
 ms.contentlocale: ja-JP
-ms.lasthandoff: 12/09/2022
-ms.locfileid: '148193098'
+ms.lasthandoff: 10/25/2022
+ms.locfileid: '148107134'
 ---
 ## Subdomain Isolationについて
 
@@ -29,21 +29,19 @@ Subdomain Isolationは、クロスサイトスクリプティングや関連す�
 
 Subdomain Isolation が有効な場合、{% data variables.product.prodname_ghe_server %} はいくつかのパスをサブドメインで置き換えます。 Subdomain Isolation を有効にした後は、ユーザーが提供した何らかのコンテンツに対する以前のパス (`http(s)://HOSTNAME/raw/` など) にアクセスしようとすると、`404` エラーが返される場合があります。
 
-{% data reusables.enterprise_site_admin_settings.3-7-new-subdomains %}
-
 | Subdomain Isolationなしのパス  | Subdomain Isolationされたパス   |
 | --- | --- |
-| `http(s)://HOSTNAME/` | `http(s)://docker.HOSTNAME/` |
-| `http(s)://HOSTNAME/_registry/npm/` | `https://npm.HOSTNAME/` |
-| `http(s)://HOSTNAME/_registry/rubygems/` | `https://rubygems.HOSTNAME/` |
-| `http(s)://HOSTNAME/_registry/maven/` | `https://maven.HOSTNAME/` |
-| `http(s)://HOSTNAME/_registry/nuget/` | `https://nuget.HOSTNAME/` |
-| `http(s)://HOSTNAME/assets/` | `http(s)://assets.HOSTNAME/` |
-| `http(s)://HOSTNAME/avatars/` | `http(s)://avatars.HOSTNAME/` |
-| `http(s)://HOSTNAME/codeload/` | `http(s)://codeload.HOSTNAME/` |
-| `http(s)://HOSTNAME/gist/` | `http(s)://gist.HOSTNAME/` |
-| `http(s)://HOSTNAME/media/` | `http(s)://media.HOSTNAME/` |
-{%- ifversion viewscreen-and-notebooks %} | `http(s)://HOSTNAME/notebooks/` | `http(s)://notebooks.HOSTNAME/` | {%- endif %} | `http(s)://HOSTNAME/pages/` | `http(s)://pages.HOSTNAME/` | | `http(s)://HOSTNAME/raw/` | `http(s)://raw.HOSTNAME/` | {%- ifversion ghes < 3.7 %} | `http(s)://HOSTNAME/render/` | `http(s)://render.HOSTNAME/` | {%- endif %} | `http(s)://HOSTNAME/reply/` | `http(s)://reply.HOSTNAME/` | | `http(s)://HOSTNAME/uploads/` | `http(s)://uploads.HOSTNAME/` | {%- ifversion viewscreen-and-notebooks %} | `http(s)://HOSTNAME/viewscreen/` | `http(s)://viewscreen.HOSTNAME/` | {%- endif %} {%- ifversion ghes > 3.4 %} | 非サポート | `https://containers.HOSTNAME/` | {%- endif %}
+| `http(s)://HOSTNAME/assets/`      | `http(s)://assets.HOSTNAME/`      |
+| `http(s)://HOSTNAME/avatars/`     | `http(s)://avatars.HOSTNAME/`     |
+| `http(s)://HOSTNAME/codeload/`    | `http(s)://codeload.HOSTNAME/`    |
+| `http(s)://HOSTNAME/gist/`        | `http(s)://gist.HOSTNAME/`        |
+| `http(s)://HOSTNAME/media/`       | `http(s)://media.HOSTNAME/`       |
+| `http(s)://HOSTNAME/pages/`       | `http(s)://pages.HOSTNAME/`       |
+| `http(s)://HOSTNAME/raw/`         | `http(s)://raw.HOSTNAME/`         |
+{%- ifversion viewscreen-and-notebooks %} | `http(s)://HOSTNAME/viewscreen/`  | `http(s)://viewscreen.HOSTNAME/`  | | `http(s)://HOSTNAME/notebooks/`   | `http(s)://notebooks.HOSTNAME/`   | {%- else %} | `http(s)://HOSTNAME/render/`      | `http(s)://render.HOSTNAME/`      | {%- endif %} | `http(s)://HOSTNAME/reply/`       | `http(s)://reply.HOSTNAME/`       | | `http(s)://HOSTNAME/uploads/`     | `http(s)://uploads.HOSTNAME/`     | {% ifversion ghes %} | `https://HOSTNAME/` | `http(s)://docker.HOSTNAME/`{% endif %}{% ifversion ghes %} | `https://HOSTNAME/_registry/npm/` | `https://npm.HOSTNAME/`
+| `https://HOSTNAME/_registry/rubygems/` | `https://rubygems.HOSTNAME/`
+| `https://HOSTNAME/_registry/maven/` | `https://maven.HOSTNAME/`
+| `https://HOSTNAME/_registry/nuget/` | `https://nuget.HOSTNAME/`{% endif %}{% ifversion ghes > 3.4 %} | 非サポート | `https://containers.HOSTNAME/` |{% endif %}
 
 ## 前提条件
 

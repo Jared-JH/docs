@@ -1,6 +1,6 @@
 ---
-title: Déploiement de PHP sur Azure App Service
-intro: Vous pouvez déployer votre projet PHP sur Azure App Service dans le cadre de vos workflows de déploiement continu (CD).
+title: Deploying PHP to Azure App Service
+intro: You can deploy your PHP project to Azure App Service as part of your continuous deployment (CD) workflows.
 versions:
   fpt: '*'
   ghes: '*'
@@ -10,38 +10,34 @@ type: tutorial
 topics:
   - CD
   - Azure App Service
-ms.openlocfilehash: 28314e1ccea9af232ff86712e86d7e6aec2d61a7
-ms.sourcegitcommit: 47bd0e48c7dba1dde49baff60bc1eddc91ab10c5
-ms.translationtype: HT
-ms.contentlocale: fr-FR
-ms.lasthandoff: 09/05/2022
-ms.locfileid: '147410162'
 ---
-{% data reusables.actions.enterprise-beta %} {% data reusables.actions.enterprise-github-hosted-runners %}
+
+{% data reusables.actions.enterprise-beta %}
+{% data reusables.actions.enterprise-github-hosted-runners %}
 
 ## Introduction
 
-Ce guide explique comment utiliser {% data variables.product.prodname_actions %} pour créer et déployer un projet PHP sur [Azure App Service](https://azure.microsoft.com/services/app-service/).
+This guide explains how to use {% data variables.product.prodname_actions %} to build and deploy a PHP project to [Azure App Service](https://azure.microsoft.com/services/app-service/).
 
-{% ifversion fpt or ghec or ghae-issue-4856 or ghes > 3.4 %}
+{% ifversion fpt or ghec or ghes > 3.4 %}
 
 {% note %}
 
-**Remarque :** {% data reusables.actions.about-oidc-short-overview %} et « [Configuration d’OpenID Connecter dans Azure](/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-azure) ».
+**Note**: {% data reusables.actions.about-oidc-short-overview %} and "[Configuring OpenID Connect in Azure](/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-azure)."
 
 {% endnote %}
 
 {% endif %}
 
-## Prérequis
+## Prerequisites
 
-Avant de créer votre workflow {% data variables.product.prodname_actions %}, vous devez suivre les étapes de configuration suivantes :
+Before creating your {% data variables.product.prodname_actions %} workflow, you will first need to complete the following setup steps:
 
 {% data reusables.actions.create-azure-app-plan %}
 
-2. Créez une application web.
+2. Create a web app.
 
-   Par exemple, vous pouvez utiliser Azure CLI pour créer une application web Azure App Service avec un runtime PHP :
+   For example, you can use the Azure CLI to create an Azure App Service web app with a PHP runtime:
 
    ```bash{:copy}
    az webapp create \
@@ -51,19 +47,19 @@ Avant de créer votre workflow {% data variables.product.prodname_actions %}, vo
        --runtime "php|7.4"
    ```
 
-   Dans la commande ci-dessus, remplacez les paramètres par vos propres valeurs, où `MY_WEBAPP_NAME` correspond au nouveau nom de l’application web.
+   In the command above, replace the parameters with your own values, where `MY_WEBAPP_NAME` is a new name for the web app.
 
 {% data reusables.actions.create-azure-publish-profile %}
 
-5. Si vous le souhaitez, configurez un environnement de déploiement. {% data reusables.actions.about-environments %}
+5. Optionally, configure a deployment environment. {% data reusables.actions.about-environments %}
 
-## Création du workflow
+## Creating the workflow
 
-Une fois les conditions préalables remplies, vous pouvez procéder à la création du workflow.
+Once you've completed the prerequisites, you can proceed with creating the workflow.
 
-L’exemple de workflow suivant montre comment créer et déployer un projet PHP sur Azure App Service lorsqu’il existe une poussée (push) vers la branche `main`.
+The following example workflow demonstrates how to build and deploy a PHP project to Azure App Service when there is a push to the `main` branch.
 
-Veillez à définir le paramètre `AZURE_WEBAPP_NAME` de la clé `env` du workflow sur le nom de l’application web que vous avez créée. Si le chemin d’accès à votre projet n’est pas la racine du référentiel, remplacez `AZURE_WEBAPP_PACKAGE_PATH` par le chemin d’accès à votre projet. Si vous utilisez une version de PHP autre que `8.x`, remplacez `PHP_VERSION` par la version que vous utilisez.
+Ensure that you set `AZURE_WEBAPP_NAME` in the workflow `env` key to the name of the web app you created. If the path to your project is not the repository root, change `AZURE_WEBAPP_PACKAGE_PATH` to the path to your project. If you use a version of PHP other than `8.x`, change`PHP_VERSION` to the version that you use.
 
 {% data reusables.actions.delete-env-key %}
 
@@ -106,7 +102,11 @@ jobs:
         id: composer-cache
         if: steps.check_files.outputs.files_exists == 'true'
         run: |
+{%- ifversion actions-save-state-set-output-envs %}
+          echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+{%- else %}
           echo "::set-output name=dir::$(composer config cache-files-dir)"
+{%- endif %}
 
       - name: Set up dependency caching for faster installs
         uses: {% data reusables.actions.action-cache %}
@@ -149,10 +149,10 @@ jobs:
           package: .
 ```
 
-## Ressources supplémentaires
+## Additional resources
 
-Les ressources suivantes peuvent également être utiles :
+The following resources may also be useful:
 
-* Pour le workflow de démarrage d’origine, consultez [`azure-webapps-php.yml`](https://github.com/actions/starter-workflows/blob/main/deployments/azure-webapps-php.yml) dans le dépôt `starter-workflows` de {% data variables.product.prodname_actions %}.
-* L’action utilisée pour déployer l’application web est l’action Azure [`Azure/webapps-deploy`](https://github.com/Azure/webapps-deploy) officielle.
-* Pour obtenir d’autres exemples de workflows GitHub Action qui se déploient sur Azure, reportez-vous au dépôt [actions-workflow-samples](https://github.com/Azure/actions-workflow-samples).
+* For the original starter workflow, see [`azure-webapps-php.yml`](https://github.com/actions/starter-workflows/blob/main/deployments/azure-webapps-php.yml) in the {% data variables.product.prodname_actions %} `starter-workflows` repository.
+* The action used to deploy the web app is the official Azure [`Azure/webapps-deploy`](https://github.com/Azure/webapps-deploy) action.
+* For more examples of GitHub Action workflows that deploy to Azure, see the [actions-workflow-samples](https://github.com/Azure/actions-workflow-samples) repository.

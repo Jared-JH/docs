@@ -22,7 +22,7 @@ const allRedirectPatterns = Object.values(languages)
 //
 // Examples:
 // /jp*    -> /ja*
-// /zh-TW* -> /zh*
+// /zh-TW* -> /cn*
 export default function languageCodeRedirects(req, res, next) {
   // Only in the unlikely event that the `req.path` starts with one of these
   // prefixes do we bother looking up what the redirect should be.

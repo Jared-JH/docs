@@ -8,10 +8,7 @@ topics:
   - Issues
   - Projects
 children:
-  - /changing-the-layout-of-a-view
-  - /customizing-the-table-layout
-  - /customizing-the-board-layout
-  - /customizing-the-roadmap-layout
+  - /customizing-a-view
   - /filtering-projects
   - /managing-your-views
 allowTitleToDifferFromFilename: true

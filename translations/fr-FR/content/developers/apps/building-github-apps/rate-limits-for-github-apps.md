@@ -1,5 +1,5 @@
 ---
-title: Limites de débit pour les applications GitHub
+title: Rate limits for GitHub Apps
 intro: '{% data reusables.shortdesc.rate_limits_github_apps %}'
 redirect_from:
   - /early-access/integrations/rate-limits
@@ -15,62 +15,57 @@ versions:
 topics:
   - GitHub Apps
 shortTitle: Rate limits
-ms.openlocfilehash: 46e1fddabff7d0e9c8d3d21c6a0d18668083ae63
-ms.sourcegitcommit: 47bd0e48c7dba1dde49baff60bc1eddc91ab10c5
-ms.translationtype: HT
-ms.contentlocale: fr-FR
-ms.lasthandoff: 09/05/2022
-ms.locfileid: '147710354'
 ---
+
 {% data reusables.enterprise.rate_limit %}
 
 {% data reusables.rest-api.always-check-your-limit %}
 
 {% ifversion ghec or fpt %}
 
-## À propos des limites de débit des applications
+## About rate limits for apps
 
-Les limites de débit des {% data variables.product.prodname_github_apps %} et des {% data variables.product.prodname_oauth_apps %} dépendent du plan de l’organisation où vous installez l’application. Pour plus d’informations, consultez « [Produits de {% data variables.product.company_short %}](/get-started/learning-about-github/githubs-products) » et « [Types de compte {% data variables.product.company_short %}](/get-started/learning-about-github/types-of-github-accounts#organization-accounts) ».
+Rate limits for {% data variables.product.prodname_github_apps %} and {% data variables.product.prodname_oauth_apps %} depend on the plan for the organization where you install the application. For more information, see "[{% data variables.product.company_short %}'s products](/get-started/learning-about-github/githubs-products)" and "[Types of {% data variables.product.company_short %} accounts](/get-started/learning-about-github/types-of-github-accounts#organization-accounts)."
 
 {% endif %}
 
-## Requêtes serveur à serveur
+## Server-to-server requests
 
 {% ifversion ghec or fpt %}
 
-### Limites de débit serveur à serveur par défaut pour {% data variables.product.prodname_dotcom_the_website %}
+### Default server-to-server rate limits for {% data variables.product.prodname_dotcom_the_website %}
 
 {% endif %}
 
-Les {% data variables.product.prodname_github_apps %} qui effectuent des requêtes serveur à serveur utilisent la limite de débit minimale de l’installation, soit 5 000 requêtes par heure. Si une application est installée dans une organisation comptant plus de 20 utilisateurs, l’application reçoit 50 requêtes supplémentaires par heure pour chaque utilisateur. Les installations qui ont plus de 20 dépôts reçoivent 50 requêtes supplémentaires par heure pour chaque dépôt. La limite de débit maximale d’une installation est de 12 500 requêtes par heure.
+{% data variables.product.prodname_github_apps %} making server-to-server requests use the installation's minimum rate limit of 5,000 requests per hour. If an application is installed on an organization with more than 20 users, the application receives another 50 requests per hour for each user. Installations that have more than 20 repositories receive another 50 requests per hour for each repository. The maximum rate limit for an installation is 12,500 requests per hour.
 
 {% ifversion fpt or ghec %}
 
-### Limites de débit serveur à serveur pour {% data variables.product.prodname_ghe_cloud %}
+### Server-to-server rate limits for {% data variables.product.prodname_ghe_cloud %}
 
 {% endif %}
 
 {% ifversion fpt or ghec %}
 
-Les {% data variables.product.prodname_github_apps %} installées sur une organisation au sein d’une entreprise sur {% data variables.product.product_location %} sont limitées à 15 000 requêtes par heure et par organisation qui a installé l’application.
+{% data variables.product.prodname_github_apps %} that are installed on an organization within an enterprise on {% data variables.location.product_location %} are subject to a limit of 15,000 requests per hour per organization that has installed the app.
 
 {% endif %}
 
-## Requêtes utilisateur à serveur
+## User-to-server requests
 
-Les {% data variables.product.prodname_github_apps %} et les {% data variables.product.prodname_oauth_apps %} peuvent également agir au nom d’un utilisateur, en effectuant des requêtes utilisateur à serveur, une fois que l’utilisateur a autorisé l’application. Pour plus d’informations, consultez « [Autorisation des {% data variables.product.prodname_github_apps %}](/authentication/keeping-your-account-and-data-secure/authorizing-github-apps) » et « [Autorisation des {% data variables.product.prodname_oauth_apps %}](/authentication/keeping-your-account-and-data-secure/authorizing-oauth-apps) ».
+{% data variables.product.prodname_github_apps %} and {% data variables.product.prodname_oauth_apps %} can also act on behalf of a user, making user-to-server requests after the user authorizes the app. For more information, see "[Authorizing {% data variables.product.prodname_github_apps %}](/authentication/keeping-your-account-and-data-secure/authorizing-github-apps)" and "[Authorizing {% data variables.product.prodname_oauth_apps %}](/authentication/keeping-your-account-and-data-secure/authorizing-oauth-apps)."
 
-Les requêtes utilisateur à serveur des {% data variables.product.prodname_oauth_apps %} sont authentifiées à l’aide d’un jeton OAuth. Les requêtes utilisateur à serveur des {% data variables.product.prodname_github_apps %} sont authentifiées à l’aide d’un jeton OAuth ou d’un jeton d’accès utilisateur ayant un délai d’expiration. Pour plus d’informations, consultez « [ Identification et autorisation des utilisateurs pour les {% data variables.product.prodname_github_apps %}](/developers/apps/building-github-apps/identifying-and-authorizing-users-for-github-apps#identifying-and-authorizing-users-for-github-apps) » et « [Autorisation des {% data variables.product.prodname_oauth_apps %}](/developers/apps/building-oauth-apps/authorizing-oauth-apps) ».
+User-to-server requests from {% data variables.product.prodname_oauth_apps %} are authenticated with an OAuth token. User-to-server requests from {% data variables.product.prodname_github_apps %} are authenticated with either an OAuth token or an expiring user access token. For more information, see "[Identifying and authorizing users for {% data variables.product.prodname_github_apps %}](/developers/apps/building-github-apps/identifying-and-authorizing-users-for-github-apps#identifying-and-authorizing-users-for-github-apps)" and "[Authorizing {% data variables.product.prodname_oauth_apps %}](/developers/apps/building-oauth-apps/authorizing-oauth-apps)."
 
 {% ifversion fpt or ghec %}
 
-### Limites de débit utilisateur à serveur par défaut pour {% data variables.product.prodname_dotcom_the_website %}
+### Default user-to-server rate limits for {% data variables.product.prodname_dotcom_the_website %}
 
 {% endif %}
 
 {% ifversion ghec %}
 
-Les limites de débit des requêtes utilisateur à serveur effectuées par les {% data variables.product.prodname_github_apps %} dépendent de l’emplacement d’installation de l’application. Si l’application est installée dans des organisations ou des dépôts appartenant à une entreprise sur {% data variables.product.product_location %}, le taux est plus élevé que pour les installations situées hors entreprise.
+The rate limits for user-to-server requests made by {% data variables.product.prodname_github_apps %} depend on where the app is installed. If the app is installed on organizations or repositories owned by an enterprise on {% data variables.location.product_location %}, then the rate is higher than for installations outside an enterprise.
 
 {% endif %}
 
@@ -78,13 +73,13 @@ Les limites de débit des requêtes utilisateur à serveur effectuées par les {
 
 {% ifversion fpt or ghec %}
 
-### Limites de débit utilisateur à serveur pour {% data variables.product.prodname_ghe_cloud %}
+### User-to-server rate limits for {% data variables.product.prodname_ghe_cloud %}
 
 {% data reusables.apps.user-to-server-rate-limits-ghec %}
 
 {% endif %}
 
-## Pour aller plus loin
+## Further reading
 
-- « [Limitation du débit](/rest/overview/resources-in-the-rest-api#rate-limiting) » dans la documentation de l’API REST
-- « [Limitations des ressources](/graphql/overview/resource-limitations) » dans la documentation de l’API GraphQL
+- "[Rate limiting](/rest/overview/resources-in-the-rest-api#rate-limiting)" in the REST API documentation
+- "[Resource limitations](/graphql/overview/resource-limitations)" in the GraphQL API documentation

@@ -1,6 +1,6 @@
 ---
 title: Commit comments
-intro: Use the REST API to interact with commit comments.
+intro: The Commit comments API lets you create and edit comments that relate to specific commits.
 versions:
   fpt: '*'
   ghes: '*'
@@ -12,9 +12,9 @@ miniTocMaxHeadingLevel: 3
 allowTitleToDifferFromFilename: true
 ---
 
-## About commit comments
+## About the commit comments API
 
-You can create, edit, and view commit comments using the REST API. A commit comment is a comment made on a specfic commit. For more information, see "[Working with comments](/rest/guides/working-with-comments#commit-comments)."
+The Commit comments API lets you create and edit comments that relate to specific commits.
 
 ### Custom media types for commit comments
 

@@ -134,6 +134,11 @@ childGroups:
       - education
       - support
 externalProducts:
+  atom:
+    id: atom
+    name: Atom
+    href: 'https://atom.io/docs'
+    external: true
   electron:
     id: electron
     name: Electron

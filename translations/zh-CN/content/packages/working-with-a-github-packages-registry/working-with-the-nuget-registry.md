@@ -1,6 +1,6 @@
 ---
-title: 使用 NuGet 注册表
-intro: '你可以配置 `dotnet` 命令行接口 (CLI) 以将 NuGet 包发布到 {% data variables.product.prodname_registry %} 并将存储在 {% data variables.product.prodname_registry %} 上的包用作 .NET 项目中的依赖项。'
+title: Working with the NuGet registry
+intro: 'You can configure the `dotnet` command-line interface (CLI) to publish NuGet packages to {% data variables.product.prodname_registry %} and to use packages stored on {% data variables.product.prodname_registry %} as dependencies in a .NET project.'
 product: '{% data reusables.gated-features.packages %}'
 redirect_from:
   - /articles/configuring-nuget-for-use-with-github-package-registry
@@ -15,27 +15,24 @@ versions:
   ghae: '*'
   ghec: '*'
 shortTitle: NuGet registry
-ms.openlocfilehash: cb9e190bb6cfa86ce1bdb31581de6e7d14e9dac8
-ms.sourcegitcommit: 6185352bc563024d22dee0b257e2775cadd5b797
-ms.translationtype: HT
-ms.contentlocale: zh-CN
-ms.lasthandoff: 12/09/2022
-ms.locfileid: '148192919'
 ---
-{% data reusables.package_registry.packages-ghes-release-stage %} {% data reusables.package_registry.packages-ghae-release-stage %}
+
+{% data reusables.package_registry.packages-ghes-release-stage %}
+{% data reusables.package_registry.packages-ghae-release-stage %}
 
 {% data reusables.package_registry.admins-can-configure-package-types %}
 
-## 向 {% data variables.product.prodname_registry %} 验证
+## Authenticating to {% data variables.product.prodname_registry %}
 
 {% data reusables.package_registry.authenticate-packages %}
 
-{% ifversion packages-nuget-v2 %} 可以选择为 {% data variables.product.prodname_github_codespaces %} 和 {% data variables.product.prodname_actions %} 单独授予对包的访问权限。 有关详细信息，请参阅“[确保 Codespace 具有包的访问权限](/packages/learn-github-packages/configuring-a-packages-access-control-and-visibility#ensuring-codespaces-access-to-your-package)”和“[确保工作流具有包的访问权限](/packages/learn-github-packages/configuring-a-packages-access-control-and-visibility#ensuring-workflow-access-to-your-package)”。
+{% ifversion packages-nuget-v2 %}
+You can choose to give access permissions to packages independently for {% data variables.product.prodname_github_codespaces %} and {% data variables.product.prodname_actions %}. For more information, see "[Ensuring Codespaces access to your package](/packages/learn-github-packages/configuring-a-packages-access-control-and-visibility#ensuring-codespaces-access-to-your-package)" and "[Ensuring workflow access to your package](/packages/learn-github-packages/configuring-a-packages-access-control-and-visibility#ensuring-workflow-access-to-your-package)."
 {% endif %}
 
-### 在 {% data variables.product.prodname_actions %} 中使用 `GITHUB_TOKEN` 进行身份验证
+### Authenticating with `GITHUB_TOKEN` in {% data variables.product.prodname_actions %}
 
-在 {% data variables.product.prodname_actions %} 工作流中通过以下命令使用 `GITHUB_TOKEN` 向 {% data variables.product.prodname_registry %} 进行身份验证，而不是对存储库的 nuget.config 文件中的 {% data variables.product.pat_generic %} 进行硬编码：
+Use the following command to authenticate to {% data variables.product.prodname_registry %} in a {% data variables.product.prodname_actions %} workflow using the `GITHUB_TOKEN` instead of hardcoding a {% data variables.product.pat_generic %} in a nuget.config file in the repository:
 
 ```shell
 dotnet nuget add source --username USERNAME --password {%raw%}${{ secrets.GITHUB_TOKEN }}{% endraw %} --store-password-in-clear-text --name github "https://{% ifversion fpt or ghec %}nuget.pkg.github.com{% else %}nuget.HOSTNAME{% endif %}/OWNER/index.json"
@@ -43,19 +40,20 @@ dotnet nuget add source --username USERNAME --password {%raw%}${{ secrets.GITHUB
 
 {% data reusables.package_registry.authenticate-packages-github-token %}
 
-### 使用 {% data variables.product.pat_generic %} 进行身份验证
+### Authenticating with a {% data variables.product.pat_generic %}
 
 {% data reusables.package_registry.required-scopes %}
 
-要使用 `dotnet` 命令行接口 (CLI) 向 {% data variables.product.prodname_registry %} 进行身份验证，请在项目目录中创建一个 nuget.config 文件，将 {% data variables.product.prodname_registry %} 指定为 `dotnet` CLI 客户端的 `packageSources` 下的源。
+To authenticate to {% data variables.product.prodname_registry %} with the `dotnet` command-line interface (CLI), create a *nuget.config* file in your project directory specifying {% data variables.product.prodname_registry %} as a source under `packageSources` for the `dotnet` CLI client.
 
-必须：
-- 将 `USERNAME` 替换为 {% data variables.product.prodname_dotcom %} 上的个人帐户的名称。
-- 将 `TOKEN` 替换为 {% data variables.product.pat_v1 %}。
-- 将 `OWNER` 替换为拥有{% ifversion packages-nuget-v2 %}要安装的包，或要向其发布包{% else %}包含项目的存储库{% endif %}的用户或组织帐户的名称。{% ifversion ghes or ghae %}
-- 将 `HOSTNAME` 替换为 {% data variables.location.product_location %} 的主机名。{% endif %}
+You must replace:
+- `USERNAME` with the name of your personal account on {% data variables.product.prodname_dotcom %}.
+- `TOKEN` with your {% data variables.product.pat_v1 %}.
+- `OWNER` with the name of the user or organization account that owns {% ifversion packages-nuget-v2 %}the package you want to install, or to which you want to publish a package{% else %}the repository containing your project{% endif %}.{% ifversion ghes or ghae %}
+- `HOSTNAME` with the host name for {% data variables.location.product_location %}.{% endif %}
 
-{% ifversion ghes %}如果实例启用了子域隔离：{% endif %}
+{% ifversion ghes %}If your instance has subdomain isolation enabled:
+{% endif %}
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -73,7 +71,8 @@ dotnet nuget add source --username USERNAME --password {%raw%}${{ secrets.GITHUB
 </configuration>
 ```
 
-{% ifversion ghes %}如果实例禁用了子域隔离：
+{% ifversion ghes %}
+If your instance has subdomain isolation disabled:
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -92,54 +91,54 @@ dotnet nuget add source --username USERNAME --password {%raw%}${{ secrets.GITHUB
 ```
 {% endif %}
 
-## 发布包
+## Publishing a package
 
-可通过使用 nuget.config 文件进行身份验证或使用包含 {% data variables.product.prodname_dotcom %} {% data variables.product.pat_v1 %} 的 `--api-key` 命令行选项，向 {% data variables.product.prodname_registry %} 发布包。
+You can publish a package to {% data variables.product.prodname_registry %} by authenticating with a *nuget.config* file, or by using the `--api-key` command line option with your {% data variables.product.prodname_dotcom %} {% data variables.product.pat_v1 %}.
 
 {% ifversion packages-nuget-v2 %}
 
-NuGet 注册表将包存储在组织或个人帐户中，并支持将包与存储库关联。 可以选择是从存储库继承权限，还是独立于存储库设置精细权限。
+The NuGet registry stores packages within your organization or personal account, and allows you to associate packages with a repository. You can choose whether to inherit permissions from a repository, or set granular permissions independently of a repository.
 
 {% data reusables.package_registry.publishing-user-scoped-packages %}
 
-如果在 `nuget.config` 文件中指定 `RepositoryURL`，则发布的包将自动连接到指定的存储库。 有关详细信息，请参阅“[使用 `nuget.config` 文件发布包](/packages/working-with-a-github-packages-registry/working-with-the-nuget-registry#publishing-a-package-using-a-nugetconfig-file)”。 有关将已发布的包链接到存储库的信息，请参阅“[将存储库连接到包](/packages/learn-github-packages/connecting-a-repository-to-a-package)”。
+If you specify a `RepositoryURL` in your `nuget.config` file, the published package will automatically be connected to the specified repository. For more information, see "[Publishing a package using a `nuget.config` file](/packages/working-with-a-github-packages-registry/working-with-the-nuget-registry#publishing-a-package-using-a-nugetconfig-file)." For information on linking an already-published package to a repository, see "[Connecting a repository to a package](/packages/learn-github-packages/connecting-a-repository-to-a-package)."
 
 {% endif %}
 
-### 使用 GitHub {% data variables.product.pat_generic %} 作为 API 密钥发布包
+### Publishing a package using a GitHub {% data variables.product.pat_generic %} as your API key
 
-如果还没有用于 {% ifversion ghae %}{% data variables.product.product_name %}{% else %}{% data variables.location.product_location %}{% endif %} 上帐户的 PAT，请参阅“[创建 {% data variables.product.pat_generic %}](/github/authenticating-to-github/creating-a-personal-access-token)”。
+If you don't already have a PAT to use for your account on {% ifversion ghae %}{% data variables.product.product_name %}{% else %}{% data variables.location.product_location %}{% endif %}, see "[Creating a {% data variables.product.pat_generic %}](/github/authenticating-to-github/creating-a-personal-access-token)."
 
-1. 创建新项目。
+1. Create a new project.
   ```shell
   dotnet new console --name OctocatApp
   ```
-2. 打包项目。
+2. Package the project.
   ```shell
   dotnet pack --configuration Release
   ```
 
-3. 使用 {% data variables.product.pat_generic %} 作为 API 密钥发布包。
+3. Publish the package using your {% data variables.product.pat_generic %} as the API key.
   ```shell
   dotnet nuget push "bin/Release/OctocatApp.1.0.0.nupkg"  --api-key YOUR_GITHUB_PAT --source "github"
   ```
 
 {% data reusables.package_registry.viewing-packages %}
 
-### 使用 nuget.config 文件发布包
+### Publishing a package using a *nuget.config* file
 
-发布时，需要将 csproj 文件中的 `OWNER` 值用于 nuget.config 身份验证文件 。 在 .csproj 文件中指定或递增版本号，然后使用 `dotnet pack` 命令创建该版本的 .nuspec 文件 。 有关创建包的详细信息，请参阅 Microsoft 文档中的“[创建和发布包](https://docs.microsoft.com/nuget/quickstart/create-and-publish-a-package-using-the-dotnet-cli)”。
+When publishing, you need to use the same value for `OWNER` in your *csproj* file that you use in your *nuget.config* authentication file. Specify or increment the version number in your *.csproj* file, then use the `dotnet pack` command to create a *.nuspec* file for that version. For more information on creating your package, see "[Create and publish a package](https://docs.microsoft.com/nuget/quickstart/create-and-publish-a-package-using-the-dotnet-cli)" in the Microsoft documentation.
 
 {% data reusables.package_registry.authenticate-step %}
-2. 创建新项目。
+2. Create a new project.
   ```shell
   dotnet new console --name OctocatApp
   ```
-3. 将项目的特定信息添加到以 .csproj 结尾的项目文件中。  必须：
-    - 将 `OWNER` 替换为拥有要将包连接到的存储库的用户或组织帐户的名称。
-    - 将 `REPOSITORY` 替换为要将包连接到的存储库的名称。                      
-    - 将 `1.0.0` 替换为包的版本号。{% ifversion ghes or ghae %}
-    - 将 `HOSTNAME` 替换为 {% data variables.location.product_location %} 的主机名。{% endif %}
+3. Add your project's specific information to your project's file, which ends in *.csproj*.  You must replace:
+    - `OWNER` with the name of the user or organization account that owns the repository to which you want to connect your package.
+    - `REPOSITORY` with the name of the repository to which you want to connect your package.                      
+    - `1.0.0` with the version number of the package.{% ifversion ghes or ghae %}
+    - `HOSTNAME` with the host name for {% data variables.location.product_location %}.{% endif %}
   ``` xml
   <Project Sdk="Microsoft.NET.Sdk">
 
@@ -156,23 +155,23 @@ NuGet 注册表将包存储在组织或个人帐户中，并支持将包与存�
 
   </Project>
   ```
-4. 打包项目。
+4. Package the project.
   ```shell
   dotnet pack --configuration Release
   ```
 
-5. 使用在 nuget.config 文件中指定的 `key` 发布包。
+5. Publish the package using the `key` you specified in the *nuget.config* file.
   ```shell
   dotnet nuget push "bin/Release/OctocatApp.1.0.0.nupkg" --source "github"
   ```
 
 {% data reusables.package_registry.viewing-packages %}
 
-## 将多个包发布到同一个仓库
+## Publishing multiple packages to the same repository
 
-若要将多个包连接到同一个存储库，可以在所有 .csproj 项目文件的 `RepositoryURL` 字段中包含同一个 {% data variables.product.prodname_dotcom %} 存储库 URL。 {% data variables.product.prodname_dotcom %} 根据该字段匹配仓库。
+To connect multiple packages to the same repository, you can include the same {% data variables.product.prodname_dotcom %} repository URL in the `RepositoryURL` fields in all *.csproj* project files. {% data variables.product.prodname_dotcom %} matches the repository based on that field.
 
-例如，OctodogApp 和 OctocatApp 项目将发布到同一个存储库 ：
+For example, the *OctodogApp* and *OctocatApp* projects will publish to the same repository:
 
 ``` xml
 <Project Sdk="Microsoft.NET.Sdk">
@@ -208,13 +207,13 @@ NuGet 注册表将包存储在组织或个人帐户中，并支持将包与存�
 </Project>
 ```
 
-## 安装包
+## Installing a package
 
-在项目中使用来自 {% data variables.product.prodname_dotcom %} 的包类似于使用来自 nuget.org 的包。将包依赖项添加到 .csproj 文件，并指定包名称和版本 。 有关在项目中使用 .csproj 文件的详细信息，请参阅 Microsoft 文档中的“[使用 NuGet 包](https://docs.microsoft.com/nuget/consume-packages/overview-and-workflow)”。
+Using packages from {% data variables.product.prodname_dotcom %} in your project is similar to using packages from *nuget.org*. Add your package dependencies to your *.csproj* file, specifying the package name and version. For more information on using a *.csproj* file in your project, see "[Working with NuGet packages](https://docs.microsoft.com/nuget/consume-packages/overview-and-workflow)" in the Microsoft documentation.
 
 {% data reusables.package_registry.authenticate-step %}
 
-2. 要使用包，请在 .csproj 项目文件中添加 `ItemGroup` 并配置 `PackageReference` 字段。 将 `Include="OctokittenApp"` 中的 `OctokittenApp` 值替换为包依赖项，并将 `Version="12.0.2"` 中的 `12.0.2` 值替换为要使用的版本：
+2. To use a package, add `ItemGroup` and configure the `PackageReference` field in the *.csproj* project file. Replace the `OctokittenApp` value in `Include="OctokittenApp"` with your package dependency, and replace the `12.0.2` value in `Version="12.0.2"` with the version you want to use:
   ``` xml
   <Project Sdk="Microsoft.NET.Sdk">
 
@@ -236,19 +235,19 @@ NuGet 注册表将包存储在组织或个人帐户中，并支持将包与存�
   </Project>
   ```
 
-3. 使用 `restore` 命令安装包。
+3. Install the packages with the `restore` command.
   ```shell
   dotnet restore
   ```
 
-## 故障排除
+## Troubleshooting
 
-如果 .csproj 中的 `RepositoryUrl` 未设置为预期存储库，则 NuGet 包可能无法推送。
+Your NuGet package may fail to push if the `RepositoryUrl` in *.csproj* is not set to the expected repository .
 
-如果使用的是 nuspec 文件，请确保它具有包含必要的 `type` 和 `url` 属性的 `repository` 元素。
+If you're using a nuspec file, ensure that it has a `repository` element with the required `type` and `url` attributes.
 
-如果使用 `GITHUB_TOKEN` 对 {% data variables.product.prodname_actions %} 工作流内的 {% data variables.product.prodname_registry %} 注册表进行身份验证，则令牌无法在工作流运行范围以外的其他存储库中访问基于专用存储库的包。 若要访问与其他存储库关联的包，请改为生成具有 `read:packages` 范围的 {% data variables.product.pat_v1 %}，并将此令牌作为机密传入。
+If you're using a `GITHUB_TOKEN` to authenticate to a {% data variables.product.prodname_registry %} registry within a {% data variables.product.prodname_actions %} workflow, the token cannot access private repository-based packages in a different repository other than where the workflow is running in. To access packages associated with other repositories, instead generate a {% data variables.product.pat_v1 %} with the `read:packages` scope and pass this token in as a secret.
  
-## 延伸阅读
+## Further reading
 
-- [删除和还原包](/packages/learn-github-packages/deleting-and-restoring-a-package)
+- "[Deleting and restoring a package](/packages/learn-github-packages/deleting-and-restoring-a-package)"
