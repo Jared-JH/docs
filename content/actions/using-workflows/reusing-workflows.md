@@ -79,12 +79,17 @@ Called workflows that are owned by the same user or organization{% ifversion ghe
 
 {% ifversion nested-reusable-workflow %}
 * You can connect up to four levels of workflows. For more information, see "[Nesting reusable workflows](#nesting-reusable-workflows)."
+* You can call a maximum of 20 reusable workflows from a single workflow file. This limit includes any trees of nested reusable workflows that may be called starting from your top-level caller workflow file.
+
+  For example, _top-level-caller-workflow.yml_ → _called-workflow-1.yml_ → _called-workflow-2.yml_ counts as 2 reusable workflows.
 {% else %}
 * Reusable workflows can't call other reusable workflows.
+* You can call a maximum of 20 reusable workflows from a single workflow file.
 {% endif %}
 {% ifversion private-actions %}{% else %}* Reusable workflows stored within a private repository can only be used by workflows within the same repository.{% endif %}
-* Any environment variables set in an `env` context defined at the workflow level in the caller workflow are not propagated to the called workflow. For more information about the `env` context, see "[Context and expression syntax for GitHub Actions](/actions/reference/context-and-expression-syntax-for-github-actions#env-context)."{% ifversion actions-reusable-workflow-matrix %}{% else %}
-* The `strategy` property is not supported in any job that calls a reusable workflow.{% endif %}
+{% ifversion actions-reusable-workflow-matrix %}{% else %}* The `strategy` property is not supported in any job that calls a reusable workflow.{% endif %}
+* Any environment variables set in an `env` context defined at the workflow level in the caller workflow are not propagated to the called workflow. For more information, see "[Variables](/actions/learn-github-actions/variables)" and "[Contexts](/actions/learn-github-actions/contexts#env-context)."
+* To reuse variables in multiple workflows, set them at the organization, repository, or environment levels and reference them using the `vars` context. For more information see "[Variables](/actions/learn-github-actions/variables)" and "[Contexts](/actions/learn-github-actions/contexts#vars-context)."
 
 ## Creating a reusable workflow
 
